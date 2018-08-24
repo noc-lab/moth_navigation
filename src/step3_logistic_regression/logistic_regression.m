@@ -92,11 +92,16 @@ plot([lambda(bestid),lambda(bestid)],[1.1*min(weights(:)),1.1*max(weights(:))],'
 grid on
 box on
 
+saveas(gcf,'../../figures/lr_cv.eps')
+
 figure('Position',[400,100,500,500],'PaperPositionMode','auto')
 semilogx(lambda,exp(-log_likelihood),'linewidth',1.5);
 xlabel('$\lambda$','Interpreter','latex','fontsize',14);
 ylabel('$\mathrm{NLL}^*(\mathbf{\zeta})$','Interpreter','latex','fontsize',14);
 grid on;
+
+saveas(gcf,'../../figures/nll.eps')
+
 
 A = weights(:,bestid);
 A./sum(abs(A))

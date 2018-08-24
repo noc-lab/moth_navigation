@@ -26,7 +26,7 @@ actor0 = weights(:,bestid);
 reward = load('../../data/processed/reward.mat');
 load ../../data/processed/forest.mat
 
-feature_character = load('../../data/processed /qstate_action_features_std.mat', 'std_feature', 'mean_feature');
+feature_character = load('../../data/processed/qstate_action_features_std.mat', 'std_feature', 'mean_feature');
 std_feature = feature_character.std_feature;
 std_feature(1:4) = 1;
 mean_feature = feature_character.mean_feature;
@@ -75,22 +75,14 @@ parfor testnum = 1:number_of_trial
   control = find(cumsum(control_probability)>rand,1);
   feature = feature_gradient(:,control);
   
-  % Plot the figure
-  %all_a = [];
-  %hLine = plot(NaN,'LineWidth',2);
   for k=1:kMax
-    % Update the figure
-    %all_a = [all_a, alpha];
-    %set(hLine,'YData',all_a);
-    %drawnow
-    
     q_state_new = move_moth_q_return_one(q_state, tran_prob(:,:,control), Gridinfo);
     
     last_control = control;
     gK = reward.R(q_state_new(2), q_state_new(1));
     
     [feature_gradient_new, control_probability_new] = ...
-      calculate_feature_gradient_mex(q_state_new,actor,last_control,m,vr0,...
+      calculate_feature_gradient(q_state_new,actor,last_control,m,vr0,...
       angular_rg,Gridinfo,energy, tran_prob, forest,fog,std_feature,...
       mean_feature,feature_set,number_feature);
     
@@ -133,15 +125,6 @@ parfor testnum = 1:number_of_trial
     alpha = alpha_new;
     r = r_new;
     
-    %Termination condition check
-%     if (abs(diffReward) < 0.0001)&&(k>1000)
-%       count = count + 1;
-%       if (count > 5000)
-%         break;
-%       end
-%     else
-%       count = 0;
-%     end
   end
   disp(alpha)
   All_Ave_Rew(testnum) = alpha;
