@@ -9,9 +9,9 @@ lambda = 0.9;
 fog = 6.6;
 
 %load the transition probability
-load('../../mat/state_action_prob.mat', 'tran_prob');
-load('../../mat/all_forest_reward.mat','allforest')
-load('LogReWard.mat','logReWard')
+load('../../data/processed/state_action_prob.mat', 'tran_prob');
+load('../../data/processed/all_forest_reward.mat','allforest')
+load('../../data/processed/exp3_LogReWard.mat','logReWard')
 allResult = cell(size(allforest));
 for id = 1:length(allforest)
   disp(id)
@@ -26,11 +26,11 @@ for id = 1:length(allforest)
 
 
   %load the selected feature set
-  load('../../mat/log_reg.mat','weights','bestid','feature_set')
+  load('../../data/processed/log_reg.mat','weights','bestid','feature_set')
   number_feature = length(feature_set);
   actor0 = weights(:,bestid);
 
-  feature_character = load('../../mat/qstate_action_features_std.mat', 'std_feature', 'mean_feature');
+  feature_character = load('../../data/processed/qstate_action_features_std.mat', 'std_feature', 'mean_feature');
   std_feature = feature_character.std_feature;
   std_feature(1:4) = 1;
   mean_feature = feature_character.mean_feature;
@@ -56,7 +56,7 @@ for id = 1:length(allforest)
   allResult{id}.All_Actor = All_Actor;
 end
 
-save('../../mat/allacresult','allResult')
+save('../../data/processed/allacresult','allResult')
 
 
 
